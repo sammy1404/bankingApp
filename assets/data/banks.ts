@@ -2,28 +2,30 @@ const banks = [
     {
         id: 1,
         name: 'SBI',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg'
+        image: 'https://i.imgur.com/zU7uBLN.png'
     },
     {
         id: 2, 
         name: 'ICICI',
-        image: "https://www.pinterest.com/pin/846817536168163111/"
+        image: 'https://i.imgur.com/FZ2PJHe.png'
     },
     {
         id: 3,
         name: 'JP Morgan',
-        image: "https://in.pinterest.com/pin/768708230140261639/"
+        image: 'https://i.imgur.com/QT4Ft7t.png'
     },
     {
         id: 4,
         name: 'American Express',
-        image: "https://www.pinterest.com/pin/brand-new-new-logo-and-identity-for-american-express-by-pentagram--324399979416986804/"
+        image: 'https://i.imgur.com/V5hlqFs.png'
     },
     {
         id: 5,
         name: 'Citi Bank',
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.quora.com%2FWhat-does-the-Citibank-logo-mean&psig=AOvVaw2Zz97rsJWJ6XueVs1IrO4q&ust=1712238244074000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOCc-9OWpoUDFQAAAAAdAAAAABAE"
+        image: 'https://i.imgur.com/BN3tFaQ.png'
     }
 ]
 
 export default banks;
+
+// https://imgur.com/a/RfQ3Nrv  -image album
