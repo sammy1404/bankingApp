@@ -1,31 +1,121 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image, ScrollView, ImageBackground } from 'react-native'; // Import Image from 'react-native'
 
 import EditScreenInfo from '@/src/components/EditScreenInfo';
 import { Text, View } from '@/src/components/Themed';
+import banks from '../../../assets/data/banks';
+
+const bank = banks[0];
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello World</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <View>
+        <View><Text style={styles.title}>Top Funds</Text></View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.row}>
+            <View style={styles.cardContainer}>
+              <Image source={require('../../../assets/images/card1.png')} style={styles.card} />
+              <Text style={styles.bankName}>{bank.name}</Text>
+            </View>
+
+            <View style={styles.cardContainer}>
+              <Image source={require('../../../assets/images/card2.png')} style={styles.card} />
+              <Text style={styles.bankName}>{bank.name}</Text>
+            </View>
+
+            <View style={styles.cardContainer}>
+              <Image source={require('../../../assets/images/card3.png')} style={styles.card} />
+              <Text style={styles.bankName}>{bank.name}</Text>
+            </View>
+
+            <View style={styles.cardContainer}>
+              <Image source={require('../../../assets/images/card4.png')} style={styles.card} />
+              <Text style={styles.bankName}>{bank.name}</Text>
+            </View>
+
+            <View style={styles.cardContainer}>
+              <Image source={require('../../../assets/images/card5.png')} style={styles.card} />
+              <Text style={styles.bankName}>{bank.name}</Text>
+            </View>
+            
+          </View>
+        </ScrollView>
+        </View>
+        
+        <View>
+          <View><Text style={[styles.title, styles.extraMargin]}>Collections</Text></View>
+          <View>
+            <View style={[styles.row, styles.squareSpacing]}>
+              <View style={styles.square}></View>
+              <View style={styles.square}></View>
+            </View>
+            <View style={[styles.row, styles.squareSpacing]}>
+              <View style={styles.square}></View>
+              <View style={styles.square}></View>
+            </View>
+          </View>
+        </View>
+        
+      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+
   },
   title: {
-    fontSize: 20, 
+    fontSize: 35,
     fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 15
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  banks: {
+    marginLeft: 10
   },
+  card: {
+    width: 225,
+    height: 150,
+    marginLeft: 10,
+    marginTop:10,
+    borderRadius:20,
+    resizeMode: 'cover',
+  },
+  row:{
+    flexDirection: 'row',
+  },
+  extraMargin:{
+    marginTop: 20
+  },
+  square: {
+    width: 181, 
+    height: 125,
+    backgroundColor: 'gray', 
+    borderColor: 'black',
+    borderRadius:10,
+    marginRight:10
+  },
+  squareSpacing:{
+    marginTop: 10,
+    marginLeft: 10,
+
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bankName:{
+
+    fontWeight: 'bold',
+    position: 'absolute',
+    bottom: 63
+  }
+
 });
