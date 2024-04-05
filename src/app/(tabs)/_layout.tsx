@@ -31,6 +31,7 @@ export default function TabLayout() {
         name="explorePage"
         options={{
           title: 'Explore',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="safari" size= {20} color='#007AFF' />,
           headerRight: () => (
             <Link href="/modal" asChild>

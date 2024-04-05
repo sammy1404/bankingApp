@@ -36,7 +36,7 @@ const collectionsTab =() =>{
       marginTop: 20
     },
     square: {
-      width: 374,
+      width: 350,
       height: 250,
       backgroundColor: 'gray',
       borderColor: 'black',
