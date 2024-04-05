@@ -49,6 +49,14 @@ export default function TabLayout() {
           ),
         }}
       />
+        <Tabs.Screen
+        name="three"
+        options={{
+          title: 'Market',
+          tabBarIcon: ({ color }) => <TabBarIcon name="line-chart" size ={23} color='#34C759'/>,
+        }}/>
+
+
       <Tabs.Screen
         name="two"
         options={{
@@ -56,6 +64,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="user" size ={23} color='#5856D6'/>,
         }}
       />
+
       
     </Tabs>
     
