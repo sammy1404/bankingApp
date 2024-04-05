@@ -1,13 +1,13 @@
 import { StyleSheet, Image, ScrollView, ImageBackground, Button, Pressable } from 'react-native'; // Import Image from 'react-native'
 
-import EditScreenInfo from '@/src/components/EditScreenInfo';
-import { Text, View } from '@/src/components/Themed';
+import EditScreenInfo from '@components/EditScreenInfo';
+import { Text, View } from '@components/Themed';
 
 
 
 const collectionsTab =() =>{
     return(
-      <View>
+      <View style={styles.length}>
       <View><Text style={[styles.title, styles.extraMargin]}>Collections</Text></View>
       <View>
         <View style={[styles.row, styles.squareSpacing]}>
@@ -52,5 +52,9 @@ const collectionsTab =() =>{
       marginLeft: 10,
   
     },
+    length:{
+      flex:1,
+      height: 450
+    }
   });
   

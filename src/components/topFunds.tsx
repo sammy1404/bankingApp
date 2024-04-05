@@ -1,11 +1,11 @@
 import { StyleSheet, Image, ScrollView, ImageBackground, Button, Pressable } from 'react-native'; // Import Image from 'react-native'
 
-import EditScreenInfo from '@/src/components/EditScreenInfo';
-import { Text, View } from '@/src/components/Themed';
-import banks from '../../assets/data/banks';
+import EditScreenInfo from '@components/EditScreenInfo';
+import { Text, View } from '@components/Themed';
+import banks from '@assets/data/banks';
 
 
-
+export const defaultBankImage = 'https://i.imgur.com/M35zeeb.png';
 const topFunds = () =>{
 
   return(
@@ -16,7 +16,7 @@ const topFunds = () =>{
         <Pressable onPress={()=> console.log(banks[0].name+" pressed")}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card1.png')} style={styles.card} />
-            <Image source={{ uri: banks[0].image }} style={styles.logo}/>
+            <Image source={{ uri: banks[0].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[0].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -26,7 +26,7 @@ const topFunds = () =>{
         <Pressable onPress={()=> console.log(banks[1].name+" pressed")}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card2.png')} style={styles.card} />
-            <Image source={{ uri: banks[1].image }} style={styles.logo}/>
+            <Image source={{ uri: banks[1].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[1].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -35,7 +35,7 @@ const topFunds = () =>{
         <Pressable onPress={()=> console.log(banks[2].name+" pressed")}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card3.png')} style={styles.card} />
-            <Image source={{ uri: banks[2].image }} style={styles.logo}/>
+            <Image source={{ uri: banks[2].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[2].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -44,7 +44,7 @@ const topFunds = () =>{
         <Pressable onPress={()=> console.log(banks[3].name+" pressed")}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card4.png')} style={styles.card} />
-            <Image source={{ uri: banks[3].image }} style={styles.logo}/>
+            <Image source={{ uri: banks[3].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[3].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -53,7 +53,7 @@ const topFunds = () =>{
         <Pressable onPress={()=> console.log(banks[4].name+" pressed")}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card5.png')} style={styles.card} />
-            <Image source={{ uri: banks[4].image }} style={styles.logo}/>
+            <Image source={{ uri: banks[4].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[4].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
