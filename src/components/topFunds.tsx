@@ -3,9 +3,12 @@ import { StyleSheet, Image, ScrollView, ImageBackground, Button, Pressable } fro
 import EditScreenInfo from '@components/EditScreenInfo';
 import { Text, View } from '@components/Themed';
 import banks from '@assets/data/banks';
+import { Link } from 'expo-router'
 
 
 export const defaultBankImage = 'https://i.imgur.com/M35zeeb.png';
+
+
 const topFunds = () =>{
 
   return(
@@ -13,54 +16,54 @@ const topFunds = () =>{
     <View><Text style={styles.title}>Top Funds</Text></View>
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View style={styles.row}>
-        <Pressable onPress={()=> console.log(banks[0].name+" pressed")}>
-          <View style={styles.cardContainer}>
+        <Link href={`/(tabs)/explorePage/${banks[0].id}`}>
+        <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card1.png')} style={styles.card} />
             <Image source={{ uri: banks[0].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[0].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
-        </Pressable>
-          
+        </Link>
 
-        <Pressable onPress={()=> console.log(banks[1].name+" pressed")}>
+        <Link href={`/(tabs)/explorePage/${banks[1].id}`}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card2.png')} style={styles.card} />
             <Image source={{ uri: banks[1].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[1].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={()=> console.log(banks[2].name+" pressed")}>
+        <Link href={`/(tabs)/explorePage/${banks[2].id}`}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card3.png')} style={styles.card} />
             <Image source={{ uri: banks[2].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[2].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={()=> console.log(banks[3].name+" pressed")}>
+        <Link href={`/(tabs)/explorePage/${banks[3].id}`}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card4.png')} style={styles.card} />
             <Image source={{ uri: banks[3].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[3].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={()=> console.log(banks[4].name+" pressed")}>
+        <Link href={`/(tabs)/explorePage/${banks[4].id}`}>
           <View style={styles.cardContainer}>
             <Image source={require('../../assets/images/card5.png')} style={styles.card} />
             <Image source={{ uri: banks[4].image || defaultBankImage}} style={styles.logo}/>
             <Text style={styles.bankName}>{banks[4].name}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
-        </Pressable>
+        </Link>
         
       </View>
     </ScrollView>
+
     </View>
   );
 };
@@ -87,7 +90,9 @@ const styles = StyleSheet.create({
   },
   row:{
     flexDirection: 'row',
-    marginRight: 10
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop:10
   },
   extraMargin:{
     marginTop: 20

@@ -7,19 +7,15 @@ import { Text, View } from '@components/Themed';
 
 const collectionsTab =() =>{
     return(
-      <View style={styles.length}>
+      <View style={{marginBottom: 25}}>
       <View><Text style={[styles.title, styles.extraMargin]}>Collections</Text></View>
       <View>
-        <View style={[styles.row, styles.squareSpacing]}>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
-        </View>
-        <View style={[styles.row, styles.squareSpacing]}>
-          <View style={styles.square}></View>
-          <View style={styles.square}></View>
+        <View style={styles.square}></View>
+        <View style={styles.square}></View>
+        <View style={styles.square}></View>
+        <View style={styles.square}></View>
         </View>
       </View>
-    </View>
     );
   };
   export default collectionsTab
@@ -40,21 +36,19 @@ const collectionsTab =() =>{
       marginTop: 20
     },
     square: {
-      width: 181, 
-      height: 125,
-      backgroundColor: 'gray', 
+      width: 374,
+      height: 250,
+      backgroundColor: 'gray',
       borderColor: 'black',
-      borderRadius:10,
-      marginRight:10
+      borderRadius: 10,
+      marginLeft: 20,
+      marginTop: 20,
     },
     squareSpacing:{
       marginTop: 10,
       marginLeft: 10,
   
     },
-    length:{
-      flex:1,
-      height: 450
-    }
+
   });
   

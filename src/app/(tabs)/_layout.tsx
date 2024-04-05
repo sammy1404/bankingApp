@@ -10,9 +10,9 @@ import { useClientOnlyValue } from '@components/useClientOnlyValue';
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
+  color: string; size: number
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -22,22 +22,23 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
+
         headerShown: useClientOnlyValue(false, true),
       }}>
+
+    <Tabs.Screen name='index' options={{href: null}}/>
       <Tabs.Screen
-        name="index"
+        name="explorePage"
         options={{
-          title: 'Hi, Name',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Explore',
+          tabBarIcon: ({ color }) => <TabBarIcon name="safari" size= {20} color='#007AFF' />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
                     name="info-circle"
-                    size={25}
+                    size={20}
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
@@ -50,8 +51,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Dashboard',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" size ={23} color='#5856D6'/>,
         }}
       />
       

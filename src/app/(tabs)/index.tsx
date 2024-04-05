@@ -1,19 +1,5 @@
-import { StyleSheet, Image, ScrollView, ImageBackground, Button, Pressable } from 'react-native'; // Import Image from 'react-native'
-import { Text, View } from '@components/Themed';
-import topFunds from '@components/topFunds';
-import collectionsTab from '@components/collectionsTab';
+import { Redirect } from "expo-router";
 
-
-export default function homeScreen() {
-  return (
-    <View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-      {topFunds()}
-      {collectionsTab()}
-      </ScrollView>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-});
+export default function TabIndex(){
+    return <Redirect href={'/(tabs)/explorePage'}/>;
+}
