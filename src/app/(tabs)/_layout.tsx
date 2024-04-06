@@ -10,7 +10,9 @@ import { useClientOnlyValue } from '@components/useClientOnlyValue';
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string; size: number
+  color: string;
+  size: number;
+  focused: boolean; // Added focused prop
 }) {
   return <FontAwesome style={{ marginBottom: -3 }} {...props} />;
 }
@@ -22,17 +24,19 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-
         headerShown: useClientOnlyValue(false, true),
-      }}>
+      }}
+    >
 
-    <Tabs.Screen name='index' options={{href: null}}/>
+      <Tabs.Screen name='index' options={{ href: null }} />
       <Tabs.Screen
         name="explorePage"
         options={{
           title: 'Explore',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="safari" size= {20} color='#007AFF' />,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name="safari" size={20} color={focused ? '#007AFF' : 'gray'} focused={focused} />
+          ),
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -49,24 +53,38 @@ export default function TabLayout() {
           ),
         }}
       />
-        <Tabs.Screen
+
+      <Tabs.Screen
         name="three"
         options={{
           title: 'Market',
-          tabBarIcon: ({ color }) => <TabBarIcon name="line-chart" size ={23} color='#34C759'/>,
-        }}/>
-
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name="line-chart" size={23} color={focused ? '#34C759' : 'gray'} focused={focused} />
+          ),
+        }}
+      />
 
       <Tabs.Screen
         name="two"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" size ={23} color='#5856D6'/>,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name="user" size={23} color={focused ? '#5856D6' : 'gray'} focused={focused} />
+          ),
         }}
       />
 
-      
+      <Tabs.Screen
+        name="four"
+        options={{
+          title: 'News',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name="newspaper-o" size={23} color={focused ? color : 'gray'} focused={focused} />
+          ),
+        }}
+      />
+
     </Tabs>
-    
+
   );
 }
