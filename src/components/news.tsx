@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Linking, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, Linking, StyleSheet, Button } from 'react-native';
 
 // Define an interface for the news article
 interface NewsArticle {
@@ -8,7 +8,7 @@ interface NewsArticle {
   url: string;
 }
 
-const API_KEY = 'd44a941ba02d4423b1fa37d45960a3bd'; 
+const API_KEY = 'd44a941ba02d4423b1fa37d45960a3bd';
 
 const StockMarketNewsSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +35,12 @@ const StockMarketNewsSearch = () => {
     }
   }, [searchQuery]);
 
+  const handleSearch = () => {
+    if (searchQuery.trim() !== '') {
+      fetchNews();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -42,11 +48,7 @@ const StockMarketNewsSearch = () => {
         value={searchQuery}
         onChangeText={setSearchQuery}
         placeholder="Search latest Stockmarket News"
-      />
-      <Button
-        title="Search"
-        onPress={fetchNews}
-        disabled={!searchQuery.trim()}
+        onSubmitEditing={handleSearch}
       />
       <ScrollView style={styles.newsContainer}>
         {news.map((article, index) => (
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#',
+    backgroundColor: '#fff',
   },
   input: {
     borderWidth: 1,

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, ScrollView, Linking, StyleSheet, useColorScheme } from 'react-native';
 
-const API_KEY = '30KG124OHWAR6T69';
+const ALPHA_VANTAGE_API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
+const CLEARBIT_API_KEY = 'YOUR_CLEARBIT_API_KEY';
 
 const StockSearchPage = () => {
   const colorScheme = useColorScheme();
@@ -9,17 +10,36 @@ const StockSearchPage = () => {
   const [price, setPrice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [news, setNews] = useState<any[]>([]);
+  const [companyName, setCompanyName] = useState('');
 
   const handleSymbolChange = (text: string) => {
     setSymbol(text.toUpperCase());
   };
 
-  const handleRefreshPress = async () => {
+  const fetchCompanyName = async () => {
+    try {
+      const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
+      const data = await response.json();
+      if (data.bestMatches && data.bestMatches.length > 0) {
+        setCompanyName(data.bestMatches[0]['2. name']);
+      } else {
+        setCompanyName('');
+      }
+    } catch (error) {
+      console.error(error);
+      setCompanyName('');
+    }
+  };
+
+  const fetchNews = async () => {
     setLoading(true);
 
     try {
+      // Fetch company name
+      await fetchCompanyName();
+
       // Get stock price
-      const responsePrice = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`);
+      const responsePrice = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
       const dataPrice = await responsePrice.json();
 
       if (dataPrice['Global Quote']) {
@@ -30,7 +50,7 @@ const StockSearchPage = () => {
       }
 
       // Get stock news
-      const responseNews = await fetch(`https://newsapi.org/v2/everything?q=${symbol}&apiKey=d44a941ba02d4423b1fa37d45960a3bd`);
+      const responseNews = await fetch(`https://newsapi.org/v2/everything?q=${companyName}&apiKey=YOUR_NEWS_API_KEY`);
       const dataNews = await responseNews.json();
 
       if (dataNews.articles) {
@@ -60,12 +80,12 @@ const StockSearchPage = () => {
         />
         <Button
           title="Search"
-          onPress={handleRefreshPress}
+          onPress={fetchNews}
           disabled={loading || symbol.trim() === ''}
           color={colorScheme === 'dark' ? 'white' : 'black'}
         />
       </View>
-      {loading && <Text style={[styles.loading, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Loading...</Text>}
+      {loading && <Text style={[styles.loading, { color: colorScheme === 'dark' ? 'white' : 'black' }]}></Text>}
       {price && (
         <Text style={[styles.price, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
           Current Price of {symbol}: ${price}
@@ -86,7 +106,7 @@ const StockSearchPage = () => {
           ))}
         </ScrollView>
       ) : (
-        <Text style={[styles.noNews, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>No news available for {symbol}</Text>
+        <Text style={[styles.noNews, { color: colorScheme === 'dark' ? 'white' : 'black' }]}></Text>
       )}
     </View>
   );
@@ -99,13 +119,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 20,
-
   },
   label: {
-    fontSize: 25,
+    fontSize: 18,
     marginBottom: 5,
-    fontWeight: 'bold',
-    textAlign: 'left'
   },
   input: {
     borderWidth: 1,
@@ -149,7 +166,3 @@ const styles = StyleSheet.create({
 });
 
 export default StockSearchPage;
-
-
-// d44a941ba02d4423b1fa37d45960a3bd
-// 30KG124OHWAR6T69
