@@ -1,45 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Linking, StyleSheet, useColorScheme } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Image, StyleSheet, useColorScheme } from 'react-native';
 
-const ALPHA_VANTAGE_API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
-const CLEARBIT_API_KEY = 'YOUR_CLEARBIT_API_KEY';
+const API_KEY = '30KG124OHWAR6T69';
+const apiKeyName = '6BhLjX7AIB2kLGWWXM2eBSvYIjUm1SOB';
 
 const StockSearchPage = () => {
   const colorScheme = useColorScheme();
   const [symbol, setSymbol] = useState('');
   const [price, setPrice] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [news, setNews] = useState<any[]>([]);
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState<string | null>(null); // Add state for companyName
 
   const handleSymbolChange = (text: string) => {
     setSymbol(text.toUpperCase());
   };
 
-  const fetchCompanyName = async () => {
-    try {
-      const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
-      const data = await response.json();
-      if (data.bestMatches && data.bestMatches.length > 0) {
-        setCompanyName(data.bestMatches[0]['2. name']);
-      } else {
-        setCompanyName('');
-      }
-    } catch (error) {
-      console.error(error);
-      setCompanyName('');
-    }
-  };
-
-  const fetchNews = async () => {
+  const fetchStockData = async () => {
     setLoading(true);
 
     try {
-      // Fetch company name
-      await fetchCompanyName();
-
       // Get stock price
-      const responsePrice = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
+      const responsePrice = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`);
       const dataPrice = await responsePrice.json();
 
       if (dataPrice['Global Quote']) {
@@ -49,19 +31,27 @@ const StockSearchPage = () => {
         setPrice(null);
       }
 
-      // Get stock news
-      const responseNews = await fetch(`https://newsapi.org/v2/everything?q=${companyName}&apiKey=YOUR_NEWS_API_KEY`);
-      const dataNews = await responseNews.json();
-
-      if (dataNews.articles) {
-        setNews(dataNews.articles.slice(0, 5)); // Limit to 5 articles
+      // Get company name
+      const response = await fetch(`https://financialmodelingprep.com/api/v3/search?query=${symbol}&apikey=${apiKeyName}`);
+      const data = await response.json();
+      if (data && data.length > 0) {
+        setCompanyName(data[0].name); // Set the companyName state
       } else {
-        setNews([]);
+        setCompanyName(null); // Reset the companyName state if not found
+      }
+
+      // Get company logo
+      const responseLogo = await fetch(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${companyName}`);
+      const dataLogo = await responseLogo.json(); 
+      if (dataLogo && dataLogo.length > 0 && dataLogo[0].logo) {
+        setLogoUrl(dataLogo[0].logo);
+      } else {
+        setLogoUrl(null);
       }
     } catch (error) {
       console.error(error);
       setPrice(null);
-      setNews([]);
+      setLogoUrl(null);
     } finally {
       setLoading(false);
     }
@@ -80,34 +70,25 @@ const StockSearchPage = () => {
         />
         <Button
           title="Search"
-          onPress={fetchNews}
+          onPress={fetchStockData}
           disabled={loading || symbol.trim() === ''}
           color={colorScheme === 'dark' ? 'white' : 'black'}
         />
       </View>
       {loading && <Text style={[styles.loading, { color: colorScheme === 'dark' ? 'white' : 'black' }]}></Text>}
       {price && (
-        <Text style={[styles.price, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
-          Current Price of {symbol}: ${price}
-        </Text>
+        <View style={styles.priceContainer}>
+          <Text style={[styles.price, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
+            Current Price of {symbol}: ${price}
+          </Text>
+          {logoUrl && <Image source={{ uri: logoUrl }} style={styles.logo} />}
+
+          <Text></Text>
+        </View>
       )}
-      {news.length > 0 ? (
-        <ScrollView style={styles.newsContainer} showsVerticalScrollIndicator={false}>
-          {news.map((article, index) => (
-            <View key={index} style={[styles.articleContainer, { borderColor: colorScheme === 'dark' ? 'white' : 'black' }]}>
-              <Text style={[styles.articleTitle, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>{article.title}</Text>
-              <Text style={[styles.articleDescription, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>{article.description}</Text>
-              <Button
-                title="Read more"
-                onPress={() => Linking.openURL(article.url)}
-                color={colorScheme === 'dark' ? 'white' : 'black'}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      ) : (
-        <Text style={[styles.noNews, { color: colorScheme === 'dark' ? 'white' : 'black' }]}></Text>
-      )}
+      {/* Output company name */}
+      {companyName && <Text style={[styles.companyName, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>{companyName}</Text>}
+
     </View>
   );
 };
@@ -121,8 +102,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 18,
+    fontSize: 25,
     marginBottom: 5,
+    fontWeight: 'bold',
+    textAlign: 'left'
   },
   input: {
     borderWidth: 1,
@@ -136,33 +119,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
   },
+  priceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
   price: {
     fontSize: 18,
-    marginBottom: 20,
     fontWeight: 'bold',
   },
-  newsContainer: {
-    flex: 1,
+  logo: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
-  articleContainer: {
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 5,
-  },
-  articleTitle: {
+  companyName: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 10,
   },
-  articleDescription: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  noNews: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+  
 });
 
 export default StockSearchPage;
