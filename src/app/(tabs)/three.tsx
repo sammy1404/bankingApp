@@ -10,7 +10,7 @@ const StockSearchPage = () => {
   const [price, setPrice] = useState<string | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [companyName, setCompanyName] = useState<string | null>(null); // Add state for companyName
+  const [companyName, setCompanyName] = useState('');
 
   const handleSymbolChange = (text: string) => {
     setSymbol(text.toUpperCase());
@@ -32,25 +32,22 @@ const StockSearchPage = () => {
       }
 
       // Get company name
-      const response = await fetch(`https://financialmodelingprep.com/api/v3/search?query=${symbol}&apikey=${apiKeyName}`);
-      const data = await response.json();
-      if (data && data.length > 0) {
-        setCompanyName(data[0].name); // Set the companyName state
+      const responseCompanyName = await fetch(`https://financialmodelingprep.com/api/v3/search?query=${symbol}&apikey=${apiKeyName}`);
+      const dataCompanyName = await responseCompanyName.json();
+      if (dataCompanyName && dataCompanyName.length > 0) {
+        const companyName = dataCompanyName[0].name;
+        setCompanyName(companyName);
       } else {
-        setCompanyName(null); // Reset the companyName state if not found
+        setCompanyName('');
       }
 
-      // Get company logo
-      const responseLogo = await fetch(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${companyName}`);
-      const dataLogo = await responseLogo.json(); 
-      if (dataLogo && dataLogo.length > 0 && dataLogo[0].logo) {
-        setLogoUrl(dataLogo[0].logo);
-      } else {
-        setLogoUrl(null);
-      }
+      // Set logo URL
+      const logoUrl = `https://financialmodelingprep.com/image-stock/${symbol}.png`;
+      setLogoUrl(logoUrl);
     } catch (error) {
       console.error(error);
       setPrice(null);
+      setCompanyName('');
       setLogoUrl(null);
     } finally {
       setLoading(false);
@@ -75,20 +72,25 @@ const StockSearchPage = () => {
           color={colorScheme === 'dark' ? 'white' : 'black'}
         />
       </View>
-      {loading && <Text style={[styles.loading, { color: colorScheme === 'dark' ? 'white' : 'black' }]}></Text>}
+      {loading && <Text style={[styles.loading, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Loading...</Text>}
       {price && (
         <View style={styles.priceContainer}>
           <Text style={[styles.price, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
             Current Price of {symbol}: ${price}
           </Text>
-          {logoUrl && <Image source={{ uri: logoUrl }} style={styles.logo} />}
-
-          <Text></Text>
+          {logoUrl && (
+            <Image
+              source={{ uri: logoUrl }}
+              style={styles.logo}
+            />
+          )}
         </View>
       )}
-      {/* Output company name */}
-      {companyName && <Text style={[styles.companyName, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>{companyName}</Text>}
-
+      {companyName && (
+        <Text style={[styles.companyName, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
+          Company: {companyName}
+        </Text>
+      )}
     </View>
   );
 };
@@ -132,13 +134,12 @@ const styles = StyleSheet.create({
   logo: {
     width: 50,
     height: 50,
-    borderRadius: 25,
+    borderRadius: 0,
   },
   companyName: {
     fontSize: 18,
-    marginBottom: 10,
+    fontWeight: 'bold',
   },
-  
 });
 
 export default StockSearchPage;
