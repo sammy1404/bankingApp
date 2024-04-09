@@ -53,11 +53,12 @@ export default function TabLayout() {
           ),
         }}
       />
-
+      <Tabs.Screen name='three' options={{ href: null }} />
       <Tabs.Screen
-        name="three"
+        name="marketPage"
         options={{
           title: 'Market',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name="line-chart" size={23} color={focused ? '#34C759' : 'gray'} focused={focused} />
           ),

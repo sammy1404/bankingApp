@@ -31,8 +31,7 @@ const banks = [
     }
 ]
 
-export default banks;
-
+export default banks
 // https://imgur.com/a/RfQ3Nrv  -image album
 
 
