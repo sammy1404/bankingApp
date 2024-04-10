@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { useColorScheme } from '@components/useColorScheme'; 
 import stocks from '@assets/data/stocks';
 import WatchlistButton from '@/components/watchlist';
-
+import chart from '@/components/chart'
 
 
 const API_KEY = '30KG124OHWAR6T69';
@@ -36,7 +36,8 @@ const StockScreen = () => {
       console.error(error);
       setPrice(null); // Reset price to null in case of error
     }
-  };
+  }; 
+
 
   const stock = stocks.find(stock => stock.symbol === stockSymbol);
   
@@ -52,7 +53,7 @@ const StockScreen = () => {
       <Text style={[styles.stockPrice, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>
           {price !== null ? `Stock price: $${price}` : ''}
         </Text>
-      <View style={styles.graph}></View>
+      <View style={styles.graph}>{chart(stockSymbol)}</View>
       <View>
       {WatchlistButton()}
        
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   graph: {
     width: 350,
     height: 250,
-    backgroundColor: 'gray',
+
     marginLeft: 20,
     marginTop: 25,
     borderRadius: 10,
