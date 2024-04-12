@@ -33,7 +33,7 @@ const StockScreen = () => {
         setPrice(null);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       setPrice(null); // Reset price to null in case of error
     }
   }; 
@@ -55,7 +55,7 @@ const StockScreen = () => {
         </Text>
       <View style={styles.graph}>{chart(stockSymbol)}</View>
       <View>
-      {WatchlistButton()}
+      {WatchlistButton(stockSymbol)}
        
       </View>
     </View>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   graph: {
     width: 350,
-    height: 250,
+    height: 300,
 
     marginLeft: 20,
     marginTop: 25,

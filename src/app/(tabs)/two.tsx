@@ -1,9 +1,12 @@
-import { StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, ScrollView, Image, Pressable } from 'react-native';
 import { Text, View } from '@/components/Themed';
-import banks from '@assets/data/banks';
-import dashboard from '@components/dashboard'
+import stocks from '@assets/data/stocks';
+import { Link } from 'expo-router';
+import { watchlist } from '@/components/addToWatchlist';
+import dashboard from '@/components/dashboard'
 
-const bankNames = banks;
+const stockNames = stocks;
 
 const bulletColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080']; // Define colors
 
@@ -12,16 +15,31 @@ export default function TabTwoScreen() {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
         {dashboard()}
-        <Text style ={styles.title}>Hot off the Press</Text>
-        <View style={styles.square}></View>
-        <View style={styles.square}></View>
-        <View style={styles.square}></View>
-        <View style={[styles.square, { marginBottom: 25 }]}></View>
+        <Text style={styles.title}>Watchlist</Text>
+        {watchlist.map((symbol, index) => {
+          const stock = stockNames.find(stock => stock.symbol === symbol);
+          const stockName = stock ? stock.name : '';
+          const stockImage = stock ? stock.logoUrl : '';
 
+          return (
+            <Pressable key={index}>
+              <Link href={`/marketPage/${symbol}`}>
+                <View style={styles.row}>
+                  <Image source={{ uri: stockImage }} style={styles.logo} />
+                  <View>
+                    <Text style={styles.companyName}>{stockName}</Text>
+                    <Text style={styles.symbol}>{symbol}</Text>
+                  </View>
+                </View>
+              </Link>
+            </Pressable>
+          );
+        })}
       </View>
-    </ScrollView>   
+    </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   title: {
     fontSize: 35,
@@ -29,13 +47,28 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 15,
   },
-  square: {
-    width: 350,
-    height: 250,
-    backgroundColor: 'gray',
-    borderColor: 'black',
-    borderRadius: 10,
+  logo: {
+    height: 40,
+    width: 40,
     marginLeft: 20,
-    marginTop: 20,
+    marginTop: 5,
+    borderRadius: 5,
+  },
+  companyName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingVertical: 0,
+    paddingHorizontal: 20,
+  },
+  symbol: {
+    paddingHorizontal: 20,
+    color: 'gray',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomColor: 'lightgray',
+    width:350
   },
 });
