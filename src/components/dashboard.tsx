@@ -10,6 +10,8 @@ const bankNames = banks;
 
 const bulletColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080']; // Define colors
 
+
+
 export default function TabTwoScreen() {
   const [selectedWatchlistItems, setSelectedWatchlistItems] = useState<string[]>([watchlist[0], watchlist[1], watchlist[2], watchlist[3], watchlist[4]]);
 
