@@ -15,7 +15,10 @@ export default function TabTwoScreen() {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
         {dashboard()}
-        <Text style={styles.title}>Watchlist</Text>
+        <View style={styles.height}>
+          <Text style={styles.title}>Watchlist</Text>
+        </View>
+        
         {watchlist.map((symbol, index) => {
           const stock = stockNames.find(stock => stock.symbol === symbol);
           const stockName = stock ? stock.name : '';
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 20,
     marginTop: 15,
+
   },
   logo: {
     height: 40,
@@ -71,4 +75,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgray',
     width:350
   },
+  height:{
+    height: 500
+  }
 });

@@ -1,79 +1,68 @@
+import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import banks from '@assets/data/banks';
 import { LineChart } from "react-native-gifted-charts";
 import { watchlist } from '@components/addToWatchlist';
 import RNPickerSelect from 'react-native-picker-select';
-import { useState } from 'react';
-
-const bankNames = banks;
+import fetchStockData from '@components/profileGraph'; // Import the function
 
 const bulletColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080']; // Define colors
 
-
-
 export default function TabTwoScreen() {
   const [selectedWatchlistItems, setSelectedWatchlistItems] = useState<string[]>([watchlist[0], watchlist[1], watchlist[2], watchlist[3], watchlist[4]]);
+  const [stockData, setStockData] = useState<any[]>([]);
+  const [showNoStocksMessage, setShowNoStocksMessage] = useState<boolean>(false); // Flag to track if no stocks are available
 
-  const testData = [
-    { label: '2024-04-01', value: 10 },
-    { label: '2024-04-02', value: 23 },
-    { label: '2024-04-03', value: 34 },
-    { label: '2024-04-04', value: 30 }
-  ];
-  const testData2 = [
-    { label: '2024-04-01', value: 3 },
-    { label: '2024-04-02', value: 42 },
-    { label: '2024-04-03', value: 21 },
-    { label: '2024-04-04', value: 23 }
-  ];
-  const testData3 = [
-    { label: '2024-04-01', value: 3 },
-    { label: '2024-04-02', value: 42 },
-    { label: '2024-04-03', value: 21 },
-    { label: '2024-04-04', value: 23 }
-  ];
-  const testData4 = [
-    { label: '2024-04-01', value: 3 },
-    { label: '2024-04-02', value: 42 },
-    { label: '2024-04-03', value: 21 },
-    { label: '2024-04-04', value: 23 }
-  ];
-  const testData5 = [
-    { label: '2024-04-01', value: 3 },
-    { label: '2024-04-02', value: 42 },
-    { label: '2024-04-03', value: 21 },
-    { label: '2024-04-04', value: 23 }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await Promise.all(selectedWatchlistItems.map(fetchStockData));
+      setStockData(newData);
+    };
 
-  const handleWatchlistItemChange = (index: number, value: string) => {
+    fetchData();
+  }, [selectedWatchlistItems]);
+
+  const handleWatchlistItemChange = async (index: number, value: string) => {
     const updatedItems = [...selectedWatchlistItems];
     updatedItems[index] = value;
     setSelectedWatchlistItems(updatedItems);
   };
 
+  useEffect(() => {
+    // Check if any stock data is available
+    const hasStocks = stockData.some(stock => stock.length > 0);
+    setShowNoStocksMessage(!hasStocks); // Show message if no stocks are available
+  }, [stockData]);
+
   return (
     <View>
       <Text style={styles.title}>Dashboard</Text>
-      <View style={styles.square}>
-        <LineChart
-          areaChart
-          hideDataPoints
-          xAxisLabelsVerticalShift={20}
-          rotateLabel
-          data={testData}
-          data2={testData2}
-          startOpacity1={0}
-          endOpacity1={0}
-          color1='#FF0000'
-          startOpacity2={0}
-          endOpacity2={0}
-          color2='#00FF00'
-        />
-      </View>
+      {stockData.map((stock, index) => (
+        <View key={index} style={styles.square}>
+          {stock.length > 0 ? (
+            <>
+              <LineChart
+                areaChart
+                hideDataPoints
+                xAxisLabelsVerticalShift={20}
+                rotateLabel
+                data={stock}
+                color={bulletColors[index % bulletColors.length]}
+              />
+              <Text>{selectedWatchlistItems[index]}</Text>
+            </>
+          ) : null}
+        </View>
+      ))}
+      {showNoStocksMessage && (
+        <View>
+          <Text style={styles.caption}>Add more stocks to your watchlist for them to appear here!</Text>
+        </View>
+      )}
       <View style={styles.bankName}>
         <Text style={styles.subTitle}>Select watchlisted stocks</Text>
-        {bankNames.map((stock, index) => (
+        {banks.map((stock, index) => (
           <View key={index} style={styles.row}>
             <View style={[styles.bullet, { backgroundColor: bulletColors[index % bulletColors.length] }]} />
             <RNPickerSelect
@@ -97,7 +86,6 @@ const styles = StyleSheet.create({
   },
   square: {
     width: 350,
-    height: 250,
     borderColor: 'black',
     borderRadius: 10,
     marginLeft: 20,
@@ -106,10 +94,6 @@ const styles = StyleSheet.create({
   bankName: {
     marginTop: 30,
     marginLeft: 30,
-  },
-  banks: {
-    marginBottom: 10,
-    fontSize: 16,
   },
   bullet: {
     width: 10,
@@ -129,5 +113,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold', 
     marginBottom: 10
+  },
+  caption:{
+    fontSize: 15,
+    fontWeight: '600', 
+    marginHorizontal: 30,
+    textAlign: 'center',
+    color: 'gray'
   }
 });
