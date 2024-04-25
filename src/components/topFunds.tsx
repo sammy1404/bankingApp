@@ -52,6 +52,12 @@ export default function TopFunds() {
     if(!stockData || !stockData.symbol) return "Stock not Found"
     return stockData.symbol;
   }
+
+
+  const gains = (stockData: any) =>{
+    if(!stockData || !stockData.changesPercentage) return null
+    return parseFloat(stockData.changesPercentage.toFixed(2));;
+  }
   
 
   return(
@@ -63,6 +69,7 @@ export default function TopFunds() {
         <View style={styles.cardContainer}>
             <Image source={require('@assets/images/card1.png')} style={styles.card} />
             <Image source={{ uri: findStockLogo(fiveFundsData[0]) }} style={styles.logo}/>
+            <Text style={styles.gains}>{gains(fiveFundsData[0])}% ↑</Text>
             <Text style={styles.bankName}>{returnStockName(fiveFundsData[0])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -72,6 +79,7 @@ export default function TopFunds() {
           <View style={styles.cardContainer}>
             <Image source={require('@assets/images/card2.png')} style={styles.card} />
             <Image source={{ uri: findStockLogo(fiveFundsData[1]) }} style={styles.logo}/>
+            <Text style={styles.gains}>{gains(fiveFundsData[1])}% ↑</Text>
             <Text style={styles.bankName}>{returnStockName(fiveFundsData[1])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -81,6 +89,7 @@ export default function TopFunds() {
           <View style={styles.cardContainer}>
             <Image source={require('@assets/images/card3.png')} style={styles.card} />
             <Image source={{ uri: findStockLogo(fiveFundsData[2]) }} style={styles.logo}/>
+            <Text style={styles.gains}>{gains(fiveFundsData[2])}% ↑</Text>
             <Text style={styles.bankName}>{returnStockName(fiveFundsData[2])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -90,6 +99,7 @@ export default function TopFunds() {
           <View style={styles.cardContainer}>
             <Image source={require('@assets/images/card4.png')} style={styles.card} />
             <Image source={{ uri: findStockLogo(fiveFundsData[3]) }} style={styles.logo}/>
+            <Text style={styles.gains}>{gains(fiveFundsData[3])}% ↑</Text>
             <Text style={styles.bankName}>{returnStockName(fiveFundsData[3])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -99,6 +109,7 @@ export default function TopFunds() {
           <View style={styles.cardContainer}>
             <Image source={require('@assets/images/card5.png')} style={styles.card} />
             <Image source={{ uri: findStockLogo(fiveFundsData[4]) }} style={styles.logo}/>
+            <Text style={styles.gains}>{gains(fiveFundsData[4])}% ↑</Text>
             <Text style={styles.bankName}>{returnStockName(fiveFundsData[4])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
@@ -167,6 +178,15 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     borderRadius:4
+  },
+  gains:{
+    position: 'absolute',
+    bottom: 0,
+    top: 27,
+    right: 15,
+    borderRadius:4,
+    color: 'green',
+    fontWeight: 'bold'
   }
 
 });
