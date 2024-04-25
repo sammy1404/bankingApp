@@ -2530,6 +2530,11 @@ const stocks =[
     logoUrl: "https://cdn.jsdelivr.net/gh/ahmeterenodaci/Nasdaq-Stock-Exchange-including-Symbols-and-Logos/logos/_AZTA.png"
   },
   {
+    symbol: "BA",
+    name: "Boeing Co.",
+    logoUrl: "https://imgur.com/RkwAXHI"
+  },
+  {
     symbol: "BABX",
     name: "GraniteShares 1.75x Long BABA Daily ETF",
     logoUrl: "https://cdn.jsdelivr.net/gh/ahmeterenodaci/Nasdaq-Stock-Exchange-including-Symbols-and-Logos/logos/_BABX.png"
