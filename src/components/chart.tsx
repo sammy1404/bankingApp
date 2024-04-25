@@ -60,14 +60,15 @@ const Chart = (stockSymbol: string) => {
       setTimePeriod(timePeriod)
     }
     const slicedChartData = chartData.slice(0, timePeriod); 
-    setSlicedChartData(slicedChartData);
+    setSlicedChartData(slicedChartData.reverse());
   };
 
   return (
     <View style={styles.container}>
       <LineChart 
         areaChart
-        data={slicedChartData}
+        data={slicedChartData.reverse()}
+        
       />
 
       <View style={styles.buttonContainer}>

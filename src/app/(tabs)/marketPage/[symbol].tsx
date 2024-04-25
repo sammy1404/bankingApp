@@ -34,7 +34,7 @@ const StockScreen = () => {
       }
     } catch (error) {
       console.log(error);
-      setPrice(null); // Reset price to null in case of error
+      setPrice(null);
     }
   }; 
 

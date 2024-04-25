@@ -4,59 +4,102 @@ import EditScreenInfo from '@components/EditScreenInfo';
 import { Text, View } from '@components/Themed';
 import banks from '@assets/data/banks';
 import { Link } from 'expo-router'
+import { useEffect, useState } from 'react';
+import stocks from '@assets/data/stocks';
+
+const defaultBankImage = 'https://i.imgur.com/M35zeeb.png';
+
+export default function TopFunds() {
+  const [topFunds, setTopFunds] = useState<any[]>([]); 
+  const [fiveFunds, setFiveFunds] = useState<any[]>([]);
 
 
-export const defaultBankImage = 'https://i.imgur.com/M35zeeb.png';
+  const topFiveFunds = ()=>{
+    
+    return fiveFunds.filter(stock => stocks.some(s => s.symbol === stock.symbol)).slice(0, 5);
+  }
+
+  
 
 
-const topFunds = () =>{
+  // Declare fiveFunds as a global variable
+  const fiveFundsData = topFiveFunds();
+
+
+  useEffect(() => {
+    const fetchTopFunds = async () => {
+      try {
+        const responseData = await fetch(`https://financialmodelingprep.com/api/v3/stock_market/gainers?apikey=6BhLjX7AIB2kLGWWXM2eBSvYIjUm1SOB`);
+        const funds = await responseData.json();
+        setFiveFunds(funds);
+        setTopFunds(funds); // Setting all funds in topFunds
+      } catch (error) {
+        console.log("error in top funds " + error);
+      }
+    };
+
+    fetchTopFunds(); 
+  }, []); 
+
+  const findStockLogo = (stockData: any) => {
+    if (!stockData || !stockData.symbol) return defaultBankImage;
+    const stockSymbol = stockData.symbol;
+    const company = stocks.find(stock => stock.symbol === stockSymbol);
+    return company?.logoUrl || defaultBankImage;
+  };
+
+  const returnStockName = (stockData: any) =>{
+    if(!stockData || !stockData.symbol) return "Stock not Found"
+    return stockData.symbol;
+  }
+  
 
   return(
     <View>
     <View><Text style={styles.title}>Top Funds</Text></View>
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View style={styles.row}>
-        <Link href={`/(tabs)/explorePage/${banks[0].id}`}>
+      <Link href={`/marketPage/${returnStockName(fiveFundsData[0])}`}>
         <View style={styles.cardContainer}>
-            <Image source={require('../../assets/images/card1.png')} style={styles.card} />
-            <Image source={{ uri: banks[0].image || defaultBankImage}} style={styles.logo}/>
-            <Text style={styles.bankName}>{banks[0].name}</Text>
+            <Image source={require('@assets/images/card1.png')} style={styles.card} />
+            <Image source={{ uri: findStockLogo(fiveFundsData[0]) }} style={styles.logo}/>
+            <Text style={styles.bankName}>{returnStockName(fiveFundsData[0])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
         </Link>
 
-        <Link href={`/(tabs)/explorePage/${banks[1].id}`}>
+        <Link href={`/marketPage/${returnStockName(fiveFundsData[1])}`}>
           <View style={styles.cardContainer}>
-            <Image source={require('../../assets/images/card2.png')} style={styles.card} />
-            <Image source={{ uri: banks[1].image || defaultBankImage}} style={styles.logo}/>
-            <Text style={styles.bankName}>{banks[1].name}</Text>
+            <Image source={require('@assets/images/card2.png')} style={styles.card} />
+            <Image source={{ uri: findStockLogo(fiveFundsData[1]) }} style={styles.logo}/>
+            <Text style={styles.bankName}>{returnStockName(fiveFundsData[1])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
         </Link>
 
-        <Link href={`/(tabs)/explorePage/${banks[2].id}`}>
+        <Link href={`/marketPage/${returnStockName(fiveFundsData[2])}`}>
           <View style={styles.cardContainer}>
-            <Image source={require('../../assets/images/card3.png')} style={styles.card} />
-            <Image source={{ uri: banks[2].image || defaultBankImage}} style={styles.logo}/>
-            <Text style={styles.bankName}>{banks[2].name}</Text>
+            <Image source={require('@assets/images/card3.png')} style={styles.card} />
+            <Image source={{ uri: findStockLogo(fiveFundsData[2]) }} style={styles.logo}/>
+            <Text style={styles.bankName}>{returnStockName(fiveFundsData[2])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
         </Link>
 
-        <Link href={`/(tabs)/explorePage/${banks[3].id}`}>
+        <Link href={`/marketPage/${returnStockName(fiveFundsData[3])}`}>
           <View style={styles.cardContainer}>
-            <Image source={require('../../assets/images/card4.png')} style={styles.card} />
-            <Image source={{ uri: banks[3].image || defaultBankImage}} style={styles.logo}/>
-            <Text style={styles.bankName}>{banks[3].name}</Text>
+            <Image source={require('@assets/images/card4.png')} style={styles.card} />
+            <Image source={{ uri: findStockLogo(fiveFundsData[3]) }} style={styles.logo}/>
+            <Text style={styles.bankName}>{returnStockName(fiveFundsData[3])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
         </Link>
 
-        <Link href={`/(tabs)/explorePage/${banks[4].id}`}>
+        <Link href={`/marketPage/${returnStockName(fiveFundsData[4])}`}>
           <View style={styles.cardContainer}>
-            <Image source={require('../../assets/images/card5.png')} style={styles.card} />
-            <Image source={{ uri: banks[4].image || defaultBankImage}} style={styles.logo}/>
-            <Text style={styles.bankName}>{banks[4].name}</Text>
+            <Image source={require('@assets/images/card5.png')} style={styles.card} />
+            <Image source={{ uri: findStockLogo(fiveFundsData[4]) }} style={styles.logo}/>
+            <Text style={styles.bankName}>{returnStockName(fiveFundsData[4])}</Text>
             <Text style={styles.infoButton}>(click for info)</Text>
           </View>
         </Link>
@@ -68,7 +111,6 @@ const topFunds = () =>{
   );
 };
 
-export default topFunds
 const styles = StyleSheet.create({
 
   title: {
@@ -129,3 +171,7 @@ const styles = StyleSheet.create({
 
 });
 
+
+
+
+//<Link href={`/marketPage/${symbol}`}>
